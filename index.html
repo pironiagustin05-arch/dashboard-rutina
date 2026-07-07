@@ -257,9 +257,40 @@
     .notas-layout{grid-template-columns:1fr;}
     .stat-row{grid-template-columns:repeat(2,1fr);}
   }
+
+  /* ---------- Dark theme override ---------- */
+  body.dark-theme{
+    --bg:#191919;
+    --bg-2:#202020;
+    --panel:#202020;
+    --panel-2:#252525;
+    --border:#2F2F2F;
+    --border-soft:#272727;
+    --text:#E9E9E7;
+    --text-dim:#8F8F8F;
+    --cyan:#4DABF7;
+    --cyan-soft:#1B2733;
+    --purple:#B98FF0;
+    --purple-soft:#26202E;
+    --gold:#E3A458;
+    --gold-soft:#2E2416;
+    --green:#5FBF88;
+    --green-soft:#1D2B22;
+    --red:#E5675F;
+    --red-soft:#2E1D1B;
+    --shadow:0 1px 3px rgba(0,0,0,.4);
+  }
+  .theme-toggle{
+    position:fixed;top:16px;right:16px;z-index:1000;
+    width:36px;height:36px;border-radius:50%;
+    border:1px solid var(--border);background:var(--panel);color:var(--text);
+    font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);
+  }
+  .theme-toggle:hover{border-color:var(--text-dim);}
 </style>
 </head>
 <body>
+<button id="theme-toggle-btn" class="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
 
 <!-- ================= AUTH SCREEN ================= -->
 <div id="auth-screen">
@@ -1003,6 +1034,18 @@ async function deleteCurrentNote(){
   await loadSectionsAndNotes();
   renderNotes();
 }
+
+/* ---------------- TEMA (claro/oscuro) ---------------- */
+function applyTheme(theme){
+  document.body.classList.toggle('dark-theme', theme === 'dark');
+  document.getElementById('theme-toggle-btn').textContent = theme === 'dark' ? '☀️' : '🌙';
+}
+applyTheme(localStorage.getItem('bitacora-theme') || 'light');
+document.getElementById('theme-toggle-btn').addEventListener('click', () => {
+  const next = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
+  localStorage.setItem('bitacora-theme', next);
+  applyTheme(next);
+});
 
 init();
 </script>
