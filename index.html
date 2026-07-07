@@ -247,6 +247,10 @@
   .chip .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
   .chip.add-chip{color:var(--text-dim);border-style:dashed;}
   .chip.add-chip:hover{background:var(--bg-2);color:var(--text);}
+  .chip{cursor:pointer;}
+  .chip-del{background:none;border:none;color:var(--text-dim);font-size:13px;line-height:1;
+    padding:0 0 0 2px;margin-left:2px;}
+  .chip-del:hover{color:var(--red);}
 
   .notas-layout{display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start;}
   .notes-sidelist{display:flex;flex-direction:column;gap:8px;}
@@ -675,11 +679,13 @@ function renderLineChart(){
   bars.forEach((b,i) => {
     const x = padL + i*(barW+gap);
     if(b.pct === null){
-      // día sin hábitos asignados: barra hueca, sin dato
-      barsHtml += `<rect x="${x}" y="${padT+plotH-4}" width="${barW}" height="4" rx="2" fill="var(--border-soft)"/>`;
+      // día sin hábitos asignados ese día: no aplica, solo una rayita de base
+      barsHtml += `<rect x="${x}" y="${padT+plotH-2}" width="${barW}" height="2" rx="1" fill="var(--border)"/>`;
     } else {
-      const barH = Math.max((b.pct/100)*plotH, 3);
-      const color = b.pct >= 75 ? 'var(--green)' : b.pct >= 40 ? 'var(--gold)' : b.pct > 0 ? 'var(--red)' : 'var(--border-soft)';
+      // 0% cuenta como dato real (había algo para cumplir y no se cumplió) —
+      // se ve como barra roja chica, nunca se confunde con "no aplica".
+      const barH = Math.max((b.pct/100)*plotH, 7);
+      const color = b.pct >= 75 ? 'var(--green)' : b.pct >= 40 ? 'var(--gold)' : 'var(--red)';
       barsHtml += `<rect x="${x}" y="${padT+plotH-barH}" width="${barW}" height="${barH}" rx="3" fill="${color}"/>`;
     }
     if(i % Math.ceil(bars.length/16 || 1) === 0 || i === bars.length-1){
@@ -992,15 +998,34 @@ function sectionName(id){ const s = sections.find(x => x.id===id); return s ? s.
 
 function renderSectionChips(){
   const wrap = document.getElementById('section-chips');
-  let html = `<button class="chip ${selectedSectionId==='all'?'active':''}" data-chip="all">Todas</button>`;
+  let html = `<div class="chip ${selectedSectionId==='all'?'active':''}" data-chip="all" role="button" tabindex="0">Todas</div>`;
   sections.forEach(s => {
-    html += `<button class="chip ${selectedSectionId===s.id?'active':''}" style="--chip-color:${s.color}" data-chip="${s.id}">
-      <span class="dot" style="background:${s.color}"></span>${escapeHtml(s.name)}</button>`;
+    html += `<div class="chip ${selectedSectionId===s.id?'active':''}" style="--chip-color:${s.color}" data-chip="${s.id}" role="button" tabindex="0">
+      <span class="dot" style="background:${s.color}"></span>${escapeHtml(s.name)}
+      <button class="chip-del" data-chip-del="${s.id}" title="Eliminar sección" aria-label="Eliminar sección">×</button>
+    </div>`;
   });
   html += `<button class="chip add-chip" id="add-section-chip">+ sección</button>`;
   wrap.innerHTML = html;
   wrap.querySelectorAll('[data-chip]').forEach(c => c.addEventListener('click', () => { selectedSectionId = c.dataset.chip; renderNotes(); }));
+  wrap.querySelectorAll('[data-chip-del]').forEach(b => b.addEventListener('click', (e) => {
+    e.stopPropagation();
+    deleteSection(b.dataset.chipDel);
+  }));
   document.getElementById('add-section-chip').addEventListener('click', addNewSection);
+}
+
+async function deleteSection(id){
+  const section = sections.find(s => s.id === id);
+  const name = section ? section.name : 'esta sección';
+  const noteCount = notes.filter(n => n.section_id === id).length;
+  const extra = noteCount > 0 ? ` Las ${noteCount} nota(s) que tiene quedarán sin sección, no se borran.` : '';
+  const ok = window.confirm(`¿Eliminar la sección "${name}"?${extra}`);
+  if(!ok) return;
+  await sb.from('note_sections').delete().eq('id', id);
+  if(selectedSectionId === id) selectedSectionId = 'all';
+  await loadSectionsAndNotes();
+  renderNotes();
 }
 
 async function addNewSection(){
