@@ -117,19 +117,8 @@
   .btn-add:hover{background:var(--bg-2);color:var(--text);border-color:var(--text-dim);}
   .empty-hint{font-size:12.5px;color:var(--text-dim);font-style:italic;padding:10px 2px;}
 
-  .day-picker{display:flex;gap:6px;}
-  .day-picker-btn{flex:1;border:1px solid var(--border);background:var(--panel);color:var(--text-dim);
-    border-radius:6px;padding:8px 0;font-size:11.5px;font-weight:600;text-transform:uppercase;}
-  .day-picker-btn.on{background:var(--text);border-color:var(--text);color:#fff;}
-  .habit-days-row{display:flex;gap:2px;margin-top:4px;}
-  .habit-day-chip{width:16px;height:16px;border:1px solid var(--border);background:transparent;color:var(--text-dim);
-    border-radius:4px;font-size:8px;line-height:1;font-weight:700;padding:0;}
-  .habit-day-chip.on{background:var(--text);border-color:var(--text);color:#fff;}
-  td.not-due{color:var(--border);}
-  td.not-due::after{content:"–";}
-
-  /* ================= RUTINA: stat cards + chart + tracker ================= */
-  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
+  /* ================= RUTINA: tarjetas grandes por semana ================= */
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px;}
   .stat-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
     padding:14px 16px;text-align:center;}
   .stat-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);margin-bottom:8px;font-weight:600;}
@@ -138,38 +127,29 @@
   .stat-value.red{color:var(--red);}
   .stat-value.gold{color:var(--gold);}
 
-  .chart-card{padding:18px 20px;margin-bottom:18px;}
-  .chart-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
-  .chart-card h3{margin:0;font-family:var(--font-display);font-size:15px;color:var(--text);font-weight:700;}
-  .month-nav{display:flex;align-items:center;gap:6px;}
-  .month-nav button{border:1px solid var(--border);background:var(--panel);border-radius:6px;
-    width:26px;height:26px;font-size:13px;color:var(--text);}
-  .month-nav button:hover{border-color:var(--text-dim);}
-  .month-nav .month-label{font-size:12.5px;color:var(--text-dim);min-width:120px;text-align:center;font-weight:600;}
-
-  .line-chart-wrap{overflow-x:auto;}
-  .line-chart-wrap svg{display:block;}
-
-  .tracker-scroll{overflow-x:auto;border-radius:var(--radius);}
-  table.tracker{border-collapse:collapse;width:100%;min-width:640px;}
-  table.tracker th, table.tracker td{padding:8px 6px;text-align:center;font-size:11.5px;border-bottom:1px solid var(--border-soft);}
-  table.tracker th{color:var(--text-dim);font-weight:600;font-size:10px;text-transform:uppercase;}
-  table.tracker th.dow{font-size:9px;font-weight:400;color:var(--text-dim);}
-  .habit-col{position:sticky;left:0;background:var(--panel);text-align:left !important;min-width:150px;z-index:2;}
-  table.tracker thead th.habit-col{background:var(--panel);z-index:3;}
-  .habit-name-input{background:transparent;border:none;color:var(--text);font-weight:600;font-size:13px;width:100%;padding:4px 2px;border-radius:5px;}
-  .habit-name-input:focus{outline:1px solid var(--cyan);background:var(--bg-2);}
-  .day-checkbox{width:15px;height:15px;accent-color:var(--text);}
-  .fin-mes-col{min-width:70px;color:var(--text);font-weight:600;white-space:nowrap;}
-  .progreso-col{min-width:110px;}
-  .mini-bar-track{height:6px;background:var(--border-soft);border-radius:4px;overflow:hidden;}
-  .mini-bar-fill{height:100%;background:var(--green);}
-  .tracker-del{background:none;border:none;color:var(--text-dim);font-size:15px;}
-  .tracker-del:hover{color:var(--red);}
-  .pct-row td{color:var(--text-dim);font-weight:600;background:var(--bg-2);}
-  .pct-low{color:var(--red) !important;}
-  .pct-mid{color:var(--gold) !important;}
-  .pct-high{color:var(--green) !important;}
+  .habit-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+    padding:22px 24px;margin-bottom:16px;}
+  .habit-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px;}
+  .habit-name-input{background:transparent;border:none;color:var(--text);font-weight:700;font-size:20px;
+    font-family:var(--font-display);width:100%;padding:2px 0;}
+  .habit-name-input:focus{outline:none;border-bottom:1px solid var(--cyan);}
+  .habit-del{background:none;border:none;color:var(--text-dim);font-size:20px;flex-shrink:0;}
+  .habit-del:hover{color:var(--red);}
+  .habit-progress-label{font-size:13px;color:var(--text-dim);margin-bottom:10px;}
+  .habit-progress-label b{color:var(--text);}
+  .habit-squares{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+  .habit-square{width:38px;height:38px;border-radius:8px;border:2px solid var(--border);
+    background:transparent;display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:16px;}
+  .habit-square.filled{background:var(--green);border-color:var(--green);color:#fff;}
+  .habit-target-input{width:44px;background:transparent;border:none;border-bottom:1px dashed var(--border);
+    color:var(--text-dim);font-size:13px;text-align:center;}
+  .habit-target-input:focus{outline:none;border-bottom-color:var(--cyan);}
+  .habit-actions{display:flex;gap:10px;}
+  .habit-actions button{border:1px solid var(--border);background:var(--bg-2);border-radius:8px;
+    padding:10px 18px;font-size:13.5px;font-weight:600;color:var(--text);}
+  .habit-actions .do-btn{border-color:var(--green);color:var(--green);}
+  .habit-actions .do-btn:hover{background:var(--green-soft);}
+  .habit-actions .undo-btn:hover{color:var(--red);border-color:var(--red);}
 
   /* ================= AGENDA ================= */
   .agenda-card{padding:20px;}
@@ -366,40 +346,20 @@
   <!-- ---- TAB: RUTINA ---- -->
   <section class="tab-panel active" id="tab-rutina">
     <p class="col-title">Rutina</p>
-    <p class="col-sub">Tracker mensual de tus hábitos — clic en el nombre para editarlo.</p>
+    <p class="col-sub" id="rutina-week-label">Esta semana — tocá un cuadrito para marcarlo como hecho.</p>
 
-    <div class="stat-row">
+    <div class="stat-row" style="grid-template-columns:repeat(3,1fr);">
       <div class="stat-card"><div class="stat-label">Inicio</div><div class="stat-value" id="stat-inicio">—</div></div>
-      <div class="stat-card"><div class="stat-label">Mejor hábito</div><div class="stat-value green" id="stat-mejor">—</div></div>
-      <div class="stat-card"><div class="stat-label">Peor hábito</div><div class="stat-value red" id="stat-peor">—</div></div>
+      <div class="stat-card"><div class="stat-label">Mejor esta semana</div><div class="stat-value green" id="stat-mejor">—</div></div>
       <div class="stat-card"><div class="stat-label">Activos</div><div class="stat-value gold" id="stat-activos">—</div></div>
     </div>
 
-    <div class="card chart-card">
-      <div class="chart-card-head">
-        <h3>Efectividad diaria</h3>
-        <div class="month-nav">
-          <button id="rt-prev-btn">‹</button>
-          <span class="month-label" id="rt-month-label"></span>
-          <button id="rt-next-btn">›</button>
-        </div>
-      </div>
-      <div class="line-chart-wrap"><svg id="line-chart" width="100%" height="150"></svg></div>
-    </div>
-
-    <div class="card" style="padding:18px 20px;margin-bottom:16px;">
-      <h3 style="margin:0 0 4px;font-family:var(--font-display);font-size:16px;color:var(--text);">Tracker del mes</h3>
-      <p class="col-sub" style="margin-bottom:14px;">Solo aparece casillero en los días que le corresponden a cada hábito — tocá las letras (L M M J V S D) para cambiarlos.</p>
-      <div class="tracker-scroll">
-        <table class="tracker" id="tracker-table"></table>
-      </div>
-    </div>
+    <div id="habit-list"></div>
 
     <button class="btn-add" id="show-task-form-btn">+ Nuevo hábito</button>
     <div class="mini-form" id="task-form" style="display:none;">
       <input type="text" id="task-name-input" placeholder="Nombre (ej. Entrenar)">
-      <label style="display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-dim);margin-bottom:7px;">¿Qué días de la semana lo querés cumplir?</label>
-      <div class="day-picker" id="new-task-day-picker"></div>
+      <input type="number" min="1" max="14" id="task-weekly-input" placeholder="¿Cuántas veces por semana?">
       <div class="form-actions" style="margin-top:12px;">
         <button class="btn-sm cancel" id="cancel-task-btn">Cancelar</button>
         <button class="btn-sm save" id="save-task-btn">Guardar</button>
@@ -465,7 +425,6 @@ let tasks = [], logs = [];
 let notes = [], sections = [];
 let dailyTasks = [];
 let calYear, calMonth;           // agenda month
-let rtYear, rtMonth;             // rutina tracker month
 let addFormOpenDate = null;      // agenda inline add form
 let selectedSectionId = 'all';
 let editingNoteId = null;        // null | 'new' | uuid
@@ -477,17 +436,15 @@ const SECTION_PALETTE = ['#3FDDEC','#B584FF','#F0B94E','#4BE6A6','#FF7A6B','#7C9
 function fmtDate(d){ const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0'); return `${y}-${m}-${day}`; }
 function escapeHtml(str){ return (str||'').replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s])); }
 const DOW = ['Lu','Ma','Mi','Ju','Vi','Sa','Do'];
-const DOW_LONG = ['lun','mar','mié','jue','vie','sáb','dom'];
 const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 function weekdayIdx(date){ return (date.getDay()+6)%7; }
-function targetDaysOf(t){ return (t.target_days && t.target_days.length) ? t.target_days : [0,1,2,3,4,5,6]; }
-function isDueOn(t, dateObj){ return targetDaysOf(t).includes(weekdayIdx(dateObj)); }
-function dueCountInMonth(t, y, m){
-  const daysInMonth = new Date(y, m+1, 0).getDate();
-  let n = 0;
-  for(let d=1; d<=daysInMonth; d++){ if(isDueOn(t, new Date(y,m,d))) n++; }
-  return n;
+function startOfWeek(d){
+  const date = new Date(d);
+  date.setDate(date.getDate() - weekdayIdx(date));
+  date.setHours(0,0,0,0);
+  return date;
 }
+function endOfWeek(d){ const s = startOfWeek(d); const e = new Date(s); e.setDate(e.getDate()+6); return e; }
 
 /* ---------------- AUTH ---------------- */
 const FAKE_EMAIL_DOMAIN = '@bitacora.local';
@@ -549,7 +506,6 @@ async function showApp(){
   document.getElementById('user-label').textContent = displayName;
   const today = new Date();
   calYear = today.getFullYear(); calMonth = today.getMonth();
-  rtYear = today.getFullYear(); rtMonth = today.getMonth();
   await loadAll();
 }
 
@@ -566,7 +522,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 /* ---------------- LOAD ---------------- */
 async function loadAll(){
   await Promise.all([loadTasks(), loadSectionsAndNotes(), loadDailyTasksForMonth()]);
-  renderTracker();
+  renderHabits();
   renderNotes();
   renderCalendar();
 }
@@ -589,246 +545,127 @@ async function loadDailyTasksForMonth(){
   dailyTasks = data || [];
 }
 
-/* ================= RUTINA: stats + chart + tracker ================= */
-document.getElementById('rt-prev-btn').addEventListener('click', () => { rtMonth--; if(rtMonth<0){rtMonth=11;rtYear--;} renderTracker(); });
-document.getElementById('rt-next-btn').addEventListener('click', () => { rtMonth++; if(rtMonth>11){rtMonth=0;rtYear++;} renderTracker(); });
-
-function logSetForMonth(y,m){
-  const set = new Set();
-  logs.forEach(l => {
+/* ================= RUTINA: tarjetas grandes por semana ================= */
+function weeklyCountFor(taskId, weekStart, weekEnd){
+  return logs.filter(l => {
+    if(l.task_id !== taskId) return false;
     const d = new Date(l.done_date+'T00:00:00');
-    if(d.getFullYear()===y && d.getMonth()===m) set.add(l.task_id+'_'+l.done_date);
+    return d >= weekStart && d <= weekEnd;
+  }).length;
+}
+
+function renderHabits(){
+  const weekStart = startOfWeek(new Date());
+  const weekEnd = endOfWeek(new Date());
+  const weekLabel = `Semana del ${weekStart.getDate()} al ${weekEnd.getDate()} de ${MONTHS[weekEnd.getMonth()].toLowerCase()}`;
+  document.getElementById('rutina-week-label').textContent = `${weekLabel} — tocá un cuadrito para marcarlo como hecho.`;
+
+  renderHabitStats(weekStart, weekEnd);
+
+  const list = document.getElementById('habit-list');
+  if(tasks.length === 0){
+    list.innerHTML = '<p class="empty-hint">Todavía no creaste ningún hábito.</p>';
+    return;
+  }
+
+  list.innerHTML = tasks.map(t => {
+    const target = t.weekly_target || 1;
+    const count = weeklyCountFor(t.id, weekStart, weekEnd);
+    let squares = '';
+    for(let i=0; i<target; i++){
+      squares += `<button class="habit-square ${i < count ? 'filled':''}" data-square-task="${t.id}" data-square-idx="${i}">${i < count ? '✓' : ''}</button>`;
+    }
+    return `
+    <div class="habit-card">
+      <div class="habit-card-head">
+        <input type="text" class="habit-name-input" data-habit-name="${t.id}" value="${escapeHtml(t.name)}">
+        <button class="habit-del" data-habit-del="${t.id}" aria-label="Eliminar hábito">×</button>
+      </div>
+      <div class="habit-progress-label"><b>${count}/${target}</b> esta semana &nbsp;·&nbsp; meta: <input type="number" min="1" max="14" class="habit-target-input" data-habit-target="${t.id}" value="${target}"> veces/semana</div>
+      <div class="habit-squares">${squares}</div>
+      <div class="habit-actions">
+        <button class="do-btn" data-habit-do="${t.id}">+ Marcar hecho hoy</button>
+        <button class="undo-btn" data-habit-undo="${t.id}">Deshacer</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  list.querySelectorAll('[data-habit-name]').forEach(inp => {
+    inp.addEventListener('change', async () => {
+      await sb.from('routine_tasks').update({ name: inp.value.trim() || 'Sin nombre' }).eq('id', inp.dataset.habitName);
+      await loadTasks(); renderHabits();
+    });
   });
-  return set;
-}
-function monthlyCountFor(taskId,y,m){
-  return logs.filter(l => l.task_id===taskId && (() => { const d=new Date(l.done_date+'T00:00:00'); return d.getFullYear()===y && d.getMonth()===m; })()).length;
+  list.querySelectorAll('[data-habit-target]').forEach(inp => {
+    inp.addEventListener('change', async () => {
+      const val = Math.max(1, parseInt(inp.value) || 1);
+      await sb.from('routine_tasks').update({ weekly_target: val }).eq('id', inp.dataset.habitTarget);
+      await loadTasks(); renderHabits();
+    });
+  });
+  list.querySelectorAll('[data-habit-del]').forEach(b => {
+    b.addEventListener('click', async () => {
+      await sb.from('routine_tasks').delete().eq('id', b.dataset.habitDel);
+      await loadTasks(); renderHabits();
+    });
+  });
+  list.querySelectorAll('[data-habit-do]').forEach(b => {
+    b.addEventListener('click', async () => {
+      await sb.from('routine_logs').insert({ user_id: currentUser.id, task_id: b.dataset.habitDo, done_date: fmtDate(new Date()) });
+      await loadTasks(); renderHabits();
+    });
+  });
+  list.querySelectorAll('[data-habit-undo]').forEach(b => {
+    b.addEventListener('click', async () => {
+      const taskId = b.dataset.habitUndo;
+      const taskLogs = logs.filter(l => l.task_id === taskId).sort((a,b2) => new Date(b2.created_at) - new Date(a.created_at));
+      if(taskLogs.length === 0) return;
+      await sb.from('routine_logs').delete().eq('id', taskLogs[0].id);
+      await loadTasks(); renderHabits();
+    });
+  });
 }
 
-function renderTracker(){
-  document.getElementById('rt-month-label').textContent = `${MONTHS[rtMonth]} ${rtYear}`;
-  renderStats();
-  renderLineChart();
-  renderTrackerTable();
-}
-
-function renderStats(){
+function renderHabitStats(weekStart, weekEnd){
   const inicioEl = document.getElementById('stat-inicio');
   if(tasks.length){
     const earliest = tasks.reduce((a,b) => new Date(a.created_at) < new Date(b.created_at) ? a : b);
-    const d = new Date(earliest.created_at);
-    inicioEl.textContent = fmtDate(d).split('-').reverse().join('/');
+    inicioEl.textContent = fmtDate(new Date(earliest.created_at)).split('-').reverse().join('/');
   } else inicioEl.textContent = '—';
 
   document.getElementById('stat-activos').textContent = tasks.length;
 
+  const mejorEl = document.getElementById('stat-mejor');
   if(tasks.length){
     const pct = tasks.map(t => {
-      const target = dueCountInMonth(t, rtYear, rtMonth);
-      const count = monthlyCountFor(t.id, rtYear, rtMonth);
-      return { name:t.name, pct: target>0 ? (count/target)*100 : 0 };
+      const target = t.weekly_target || 1;
+      const count = weeklyCountFor(t.id, weekStart, weekEnd);
+      return { name:t.name, pct: (count/target)*100 };
     });
     const best = pct.reduce((a,b) => a.pct >= b.pct ? a : b);
-    const worst = pct.reduce((a,b) => a.pct <= b.pct ? a : b);
-    document.getElementById('stat-mejor').textContent = best.name;
-    document.getElementById('stat-peor').textContent = worst.name;
+    mejorEl.textContent = best.name;
   } else {
-    document.getElementById('stat-mejor').textContent = '—';
-    document.getElementById('stat-peor').textContent = '—';
+    mejorEl.textContent = '—';
   }
-}
-
-function renderLineChart(){
-  const svg = document.getElementById('line-chart');
-  const daysInMonth = new Date(rtYear, rtMonth+1, 0).getDate();
-  const today = new Date(); today.setHours(0,0,0,0);
-  const isCurrentMonth = today.getFullYear()===rtYear && today.getMonth()===rtMonth;
-  const lastDay = isCurrentMonth ? today.getDate() : daysInMonth;
-
-  // Un día por barra: los días sin hábitos "debidos" quedan vacíos en vez de
-  // estirar una línea que salte por encima de ellos.
-  const bars = [];
-  for(let day=1; day<=lastDay; day++){
-    const dateObj = new Date(rtYear, rtMonth, day);
-    const dateStr = fmtDate(dateObj);
-    const dueTasks = tasks.filter(t => isDueOn(t, dateObj));
-    if(dueTasks.length === 0){ bars.push({ day, pct:null }); continue; }
-    const doneCount = dueTasks.filter(t => logs.some(l => l.task_id===t.id && l.done_date===dateStr)).length;
-    bars.push({ day, pct: Math.round((doneCount/dueTasks.length)*100) });
-  }
-
-  const barW = 20, gap = 6, padL = 34, padR = 10, padT = 14, padB = 24;
-  const w = Math.max(bars.length * (barW+gap) + padL + padR, 320), h = 150;
-  const plotH = h - padT - padB;
-  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
-  svg.setAttribute('width', w);
-
-  if(bars.every(b => b.pct === null)){
-    svg.innerHTML = `<text x="${w/2}" y="${h/2}" fill="var(--text-dim)" font-size="12" text-anchor="middle">Todavía no hay hábitos con días asignados.</text>`;
-    return;
-  }
-
-  let grid = '';
-  [0,25,50,75,100].forEach(v => {
-    const y = padT + plotH - (v/100)*plotH;
-    grid += `<line x1="${padL}" y1="${y}" x2="${w-padR}" y2="${y}" stroke="var(--border-soft)" stroke-width="1"/>`;
-    grid += `<text x="${padL-8}" y="${y+3}" fill="var(--text-dim)" font-size="9" text-anchor="end">${v}%</text>`;
-  });
-
-  let barsHtml = '';
-  bars.forEach((b,i) => {
-    const x = padL + i*(barW+gap);
-    if(b.pct === null){
-      // día sin hábitos asignados ese día: no aplica, solo una rayita de base
-      barsHtml += `<rect x="${x}" y="${padT+plotH-2}" width="${barW}" height="2" rx="1" fill="var(--border)"/>`;
-    } else {
-      // 0% cuenta como dato real (había algo para cumplir y no se cumplió) —
-      // se ve como barra roja chica, nunca se confunde con "no aplica".
-      const barH = Math.max((b.pct/100)*plotH, 7);
-      const color = b.pct >= 75 ? 'var(--green)' : b.pct >= 40 ? 'var(--gold)' : 'var(--red)';
-      barsHtml += `<rect x="${x}" y="${padT+plotH-barH}" width="${barW}" height="${barH}" rx="3" fill="${color}"/>`;
-    }
-    if(i % Math.ceil(bars.length/16 || 1) === 0 || i === bars.length-1){
-      barsHtml += `<text x="${x+barW/2}" y="${h-6}" fill="var(--text-dim)" font-size="9" text-anchor="middle">${b.day}</text>`;
-    }
-  });
-
-  svg.innerHTML = `${grid}${barsHtml}`;
-}
-
-function renderTrackerTable(){
-  const table = document.getElementById('tracker-table');
-  const daysInMonth = new Date(rtYear, rtMonth+1, 0).getDate();
-  if(tasks.length === 0){
-    table.innerHTML = `<tr><td style="padding:16px;color:var(--text-dim);font-style:italic;">Todavía no creaste ningún hábito.</td></tr>`;
-    return;
-  }
-  let head1 = `<tr><th class="habit-col">Hábito</th>`;
-  let head2 = `<tr><th class="habit-col"></th>`;
-  for(let d=1; d<=daysInMonth; d++){
-    const wd = weekdayIdx(new Date(rtYear, rtMonth, d));
-    head1 += `<th>${d}</th>`;
-    head2 += `<th class="dow">${DOW_LONG[wd]}</th>`;
-  }
-  head1 += `<th class="fin-mes-col">Fin mes</th><th class="progreso-col">Progreso</th><th></th></tr>`;
-  head2 += `<th></th><th></th><th></th></tr>`;
-
-  let body = '';
-  tasks.forEach(t => {
-    const days = targetDaysOf(t);
-    const target = dueCountInMonth(t, rtYear, rtMonth);
-    const count = monthlyCountFor(t.id, rtYear, rtMonth);
-    const pct = target>0 ? Math.min(100, Math.round((count/target)*100)) : 0;
-    const dayChips = DOW.map((label, idx) => `<button class="habit-day-chip ${days.includes(idx)?'on':''}" data-habit-day-toggle="${t.id}" data-day-idx="${idx}">${label[0]}</button>`).join('');
-    body += `<tr>
-      <td class="habit-col">
-        <input type="text" class="habit-name-input" data-habit-name="${t.id}" value="${escapeHtml(t.name)}">
-        <div class="habit-days-row">${dayChips}</div>
-      </td>`;
-    for(let d=1; d<=daysInMonth; d++){
-      const dateObj = new Date(rtYear, rtMonth, d);
-      const dateStr = fmtDate(dateObj);
-      if(isDueOn(t, dateObj)){
-        const checked = logs.some(l => l.task_id===t.id && l.done_date===dateStr);
-        body += `<td><input type="checkbox" class="day-checkbox" ${checked?'checked':''} data-habit-toggle="${t.id}" data-habit-date="${dateStr}"></td>`;
-      } else {
-        body += `<td class="not-due"></td>`;
-      }
-    }
-    body += `<td class="fin-mes-col">${count}/${target}</td>
-      <td class="progreso-col"><div class="mini-bar-track"><div class="mini-bar-fill" style="width:${pct}%"></div></div></td>
-      <td><button class="tracker-del" data-habit-del="${t.id}">×</button></td>
-    </tr>`;
-  });
-
-  // % día row — sobre los hábitos que correspondían ese día
-  let pctRow = `<tr class="pct-row"><td class="habit-col">% día</td>`;
-  for(let d=1; d<=daysInMonth; d++){
-    const dateObj = new Date(rtYear, rtMonth, d);
-    const dateStr = fmtDate(dateObj);
-    const dueTasks = tasks.filter(t => isDueOn(t, dateObj));
-    const doneCount = dueTasks.filter(t => logs.some(l => l.task_id===t.id && l.done_date===dateStr)).length;
-    const pct = dueTasks.length ? Math.round((doneCount/dueTasks.length)*100) : null;
-    const cls = pct===null ? '' : pct===0 ? 'pct-low' : pct<50 ? 'pct-mid' : 'pct-high';
-    pctRow += `<td class="${cls}">${pct===null ? '–' : pct+'%'}</td>`;
-  }
-  pctRow += `<td></td><td></td><td></td></tr>`;
-
-  table.innerHTML = head1 + head2 + body + pctRow;
-
-  table.querySelectorAll('[data-habit-name]').forEach(inp => {
-    inp.addEventListener('change', async () => {
-      await sb.from('routine_tasks').update({ name: inp.value.trim() || 'Sin nombre' }).eq('id', inp.dataset.habitName);
-      await loadTasks(); renderTracker();
-    });
-  });
-  table.querySelectorAll('[data-habit-day-toggle]').forEach(chip => {
-    chip.addEventListener('click', async () => {
-      const taskId = chip.dataset.habitDayToggle;
-      const dayIdx = parseInt(chip.dataset.dayIdx);
-      const t = tasks.find(x => x.id === taskId);
-      let days = targetDaysOf(t).slice();
-      if(days.includes(dayIdx)){
-        if(days.length === 1) return; // al menos un día debe quedar activo
-        days = days.filter(d => d !== dayIdx);
-      } else {
-        days.push(dayIdx);
-      }
-      await sb.from('routine_tasks').update({ target_days: days }).eq('id', taskId);
-      await loadTasks(); renderTracker();
-    });
-  });
-  table.querySelectorAll('[data-habit-del]').forEach(b => {
-    b.addEventListener('click', async () => {
-      await sb.from('routine_tasks').delete().eq('id', b.dataset.habitDel);
-      await loadTasks(); renderTracker();
-    });
-  });
-  table.querySelectorAll('[data-habit-toggle]').forEach(cb => {
-    cb.addEventListener('change', async () => {
-      const taskId = cb.dataset.habitToggle, dateStr = cb.dataset.habitDate;
-      if(cb.checked){
-        await sb.from('routine_logs').insert({ user_id: currentUser.id, task_id: taskId, done_date: dateStr });
-      } else {
-        const match = logs.find(l => l.task_id===taskId && l.done_date===dateStr);
-        if(match) await sb.from('routine_logs').delete().eq('id', match.id);
-      }
-      await loadTasks(); renderTracker();
-    });
-  });
-}
-
-let newTaskDays = [0,1,2,3,4,5,6];
-function renderNewTaskDayPicker(){
-  const wrap = document.getElementById('new-task-day-picker');
-  wrap.innerHTML = DOW.map((label, idx) => `<button type="button" class="day-picker-btn ${newTaskDays.includes(idx)?'on':''}" data-new-day="${idx}">${label}</button>`).join('');
-  wrap.querySelectorAll('[data-new-day]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = parseInt(btn.dataset.newDay);
-      if(newTaskDays.includes(idx)){
-        if(newTaskDays.length > 1) newTaskDays = newTaskDays.filter(d => d !== idx);
-      } else {
-        newTaskDays.push(idx);
-      }
-      renderNewTaskDayPicker();
-    });
-  });
 }
 
 document.getElementById('show-task-form-btn').addEventListener('click', () => {
   document.getElementById('task-form').style.display='block';
-  renderNewTaskDayPicker();
 });
 document.getElementById('cancel-task-btn').addEventListener('click', () => { document.getElementById('task-form').style.display='none'; clearTaskForm(); });
 document.getElementById('save-task-btn').addEventListener('click', async () => {
   const name = document.getElementById('task-name-input').value.trim();
+  const weekly = Math.max(1, parseInt(document.getElementById('task-weekly-input').value) || 1);
   if(!name) return;
-  await sb.from('routine_tasks').insert({ user_id: currentUser.id, name, weekly_target:0, monthly_target:0, target_days: newTaskDays });
+  await sb.from('routine_tasks').insert({ user_id: currentUser.id, name, weekly_target: weekly, monthly_target:0 });
   document.getElementById('task-form').style.display='none';
   clearTaskForm();
-  await loadTasks(); renderTracker();
+  await loadTasks(); renderHabits();
 });
-function clearTaskForm(){ document.getElementById('task-name-input').value=''; newTaskDays=[0,1,2,3,4,5,6]; }
+function clearTaskForm(){
+  document.getElementById('task-name-input').value='';
+  document.getElementById('task-weekly-input').value='';
+}
 
 /* ================= AGENDA ================= */
 document.getElementById('cal-prev-btn').addEventListener('click', async () => { calMonth--; if(calMonth<0){calMonth=11;calYear--;} addFormOpenDate=null; await loadDailyTasksForMonth(); renderCalendar(); });
