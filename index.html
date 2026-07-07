@@ -209,6 +209,35 @@
   .cif-save{background:var(--text);color:#fff;}
   .cif-cancel{background:var(--bg-2);color:var(--text-dim);}
 
+  .day-zoom-backdrop{
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);
+    align-items:center;justify-content:center;padding:24px;z-index:900;
+  }
+  .day-zoom-backdrop.open{display:flex;}
+  .day-zoom-card{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+    padding:24px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:var(--shadow);
+  }
+  .day-zoom-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+  .day-zoom-head h3{margin:0;font-family:var(--font-display);font-size:19px;font-weight:700;color:var(--text);}
+  .day-zoom-close{background:none;border:1px solid var(--border);border-radius:50%;
+    width:30px;height:30px;font-size:15px;color:var(--text-dim);}
+  .day-zoom-close:hover{color:var(--red);border-color:var(--red);}
+  .day-zoom-add{display:flex;gap:8px;margin-bottom:16px;}
+  .day-zoom-add input[type=text]{flex:1;border:1px solid var(--border);border-radius:6px;padding:9px 11px;
+    font-size:13.5px;background:var(--bg-2);color:var(--text);}
+  .day-zoom-add input[type=time]{width:100px;border:1px solid var(--border);border-radius:6px;padding:9px 8px;
+    font-size:13px;background:var(--bg-2);color:var(--text);}
+  .day-zoom-add button{background:var(--text);color:#fff;border:none;border-radius:6px;padding:0 16px;font-size:12.5px;font-weight:700;}
+  .day-zoom-task{display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid var(--border-soft);}
+  .day-zoom-task:last-child{border-bottom:none;}
+  .day-zoom-task input[type=checkbox]{width:17px;height:17px;accent-color:var(--text);flex-shrink:0;}
+  .day-zoom-task .dzt-time{color:var(--gold);font-weight:600;font-size:12.5px;flex-shrink:0;}
+  .day-zoom-task .dzt-text{flex:1;font-size:14px;color:var(--text);}
+  .day-zoom-task .dzt-text.done{text-decoration:line-through;color:var(--text-dim);}
+  .day-zoom-task button.dzt-del{background:none;border:none;color:var(--text-dim);font-size:16px;}
+  .day-zoom-task button.dzt-del:hover{color:var(--red);}
+
   /* ================= NOTAS ================= */
   .section-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
   .chip{display:flex;align-items:center;gap:7px;background:var(--panel);border:1px solid var(--border);
@@ -280,21 +309,21 @@
     --red-soft:#2E1D1B;
     --shadow:0 1px 3px rgba(0,0,0,.4);
   }
-  .theme-toggle{
-    position:fixed;top:16px;right:16px;z-index:1000;
-    width:36px;height:36px;border-radius:50%;
+  .theme-toggle-inline{
+    position:absolute;top:16px;right:16px;
+    width:32px;height:32px;border-radius:50%;
     border:1px solid var(--border);background:var(--panel);color:var(--text);
-    font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);
+    font-size:14px;display:flex;align-items:center;justify-content:center;
   }
-  .theme-toggle:hover{border-color:var(--text-dim);}
+  .theme-toggle-inline:hover{border-color:var(--text-dim);}
 </style>
 </head>
 <body>
-<button id="theme-toggle-btn" class="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
 
 <!-- ================= AUTH SCREEN ================= -->
 <div id="auth-screen">
   <div class="auth-card">
+    <button id="theme-toggle-btn-auth" class="theme-toggle-inline" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
     <div class="auth-mark">Bitácora personal</div>
     <h1 id="auth-title">Tu rutina,<br>tus notas, tu mes.</h1>
     <p id="auth-desc">Anotá tus tareas de rutina, tus notas y tu agenda diaria. Creá tu cuenta con usuario y contraseña.</p>
@@ -318,6 +347,7 @@
   <header class="topbar">
     <div class="brand"><h1>Bitácora</h1><span>rutina · agenda · notas</span></div>
     <div class="topbar-right">
+      <button id="theme-toggle-btn-app" class="btn-ghost" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
       <span class="user-label" id="user-label"></span>
       <button class="btn-ghost" id="logout-btn">Salir</button>
     </div>
@@ -354,7 +384,7 @@
     </div>
 
     <div class="card" style="padding:18px 20px;margin-bottom:16px;">
-      <h3 style="margin:0 0 4px;font-family:var(--font-display);font-size:16px;color:#fff;">Tracker del mes</h3>
+      <h3 style="margin:0 0 4px;font-family:var(--font-display);font-size:16px;color:var(--text);">Tracker del mes</h3>
       <p class="col-sub" style="margin-bottom:14px;">Solo aparece casillero en los días que le corresponden a cada hábito — tocá las letras (L M M J V S D) para cambiarlos.</p>
       <div class="tracker-scroll">
         <table class="tracker" id="tracker-table"></table>
@@ -392,6 +422,10 @@
         <div style="height:8px;"></div>
         <div class="cal-grid-big" id="cal-grid-big"></div>
       </div>
+    </div>
+
+    <div class="day-zoom-backdrop" id="day-zoom-backdrop">
+      <div class="day-zoom-card" id="day-zoom-card"></div>
     </div>
   </section>
 
@@ -434,13 +468,6 @@ let editingNoteId = null;        // null | 'new' | uuid
 let editingNoteDraft = {};
 
 const SECTION_PALETTE = ['#3FDDEC','#B584FF','#F0B94E','#4BE6A6','#FF7A6B','#7C9CFF','#FF9EDB'];
-const DEFAULT_SECTIONS = [
-  { name:'Negocios', color:'#3FDDEC' },
-  { name:'Estudios', color:'#B584FF' },
-  { name:'Ideas', color:'#F0B94E' },
-  { name:'Correcciones', color:'#FF7A6B' },
-  { name:'Finanzas', color:'#4BE6A6' }
-];
 
 /* ---------------- helpers ---------------- */
 function fmtDate(d){ const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0'); return `${y}-${m}-${day}`; }
@@ -533,14 +560,8 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 });
 
 /* ---------------- LOAD ---------------- */
-let seedingSections = false;
 async function loadAll(){
   await Promise.all([loadTasks(), loadSectionsAndNotes(), loadDailyTasksForMonth()]);
-  if(sections.length === 0 && !seedingSections){
-    seedingSections = true;
-    await seedDefaultSections();
-    await loadSectionsAndNotes();
-  }
   renderTracker();
   renderNotes();
   renderCalendar();
@@ -556,10 +577,6 @@ async function loadSectionsAndNotes(){
   sections = s || [];
   const { data: n } = await sb.from('notes').select('*').order('created_at',{ascending:false});
   notes = n || [];
-}
-async function seedDefaultSections(){
-  const rows = DEFAULT_SECTIONS.map(s => ({ user_id: currentUser.id, name: s.name, color: s.color }));
-  await sb.from('note_sections').insert(rows);
 }
 async function loadDailyTasksForMonth(){
   const first = fmtDate(new Date(calYear, calMonth, 1));
@@ -617,18 +634,6 @@ function renderStats(){
   }
 }
 
-function smoothPath(pts){
-  if(pts.length < 2) return '';
-  let d = `M ${pts[0][0]} ${pts[0][1]}`;
-  for(let i=0;i<pts.length-1;i++){
-    const p0 = pts[i===0?0:i-1], p1 = pts[i], p2 = pts[i+1], p3 = pts[i+2>pts.length-1?pts.length-1:i+2];
-    const cp1x = p1[0] + (p2[0]-p0[0])/6, cp1y = p1[1] + (p2[1]-p0[1])/6;
-    const cp2x = p2[0] - (p3[0]-p1[0])/6, cp2y = p2[1] - (p3[1]-p1[1])/6;
-    d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2[0]} ${p2[1]}`;
-  }
-  return d;
-}
-
 function renderLineChart(){
   const svg = document.getElementById('line-chart');
   const daysInMonth = new Date(rtYear, rtMonth+1, 0).getDate();
@@ -636,32 +641,28 @@ function renderLineChart(){
   const isCurrentMonth = today.getFullYear()===rtYear && today.getMonth()===rtMonth;
   const lastDay = isCurrentMonth ? today.getDate() : daysInMonth;
 
-  // Solo cuenta los hábitos que correspondían ese día (según sus días objetivo).
-  const points = [];
+  // Un día por barra: los días sin hábitos "debidos" quedan vacíos en vez de
+  // estirar una línea que salte por encima de ellos.
+  const bars = [];
   for(let day=1; day<=lastDay; day++){
     const dateObj = new Date(rtYear, rtMonth, day);
     const dateStr = fmtDate(dateObj);
     const dueTasks = tasks.filter(t => isDueOn(t, dateObj));
-    if(dueTasks.length === 0) continue;
+    if(dueTasks.length === 0){ bars.push({ day, pct:null }); continue; }
     const doneCount = dueTasks.filter(t => logs.some(l => l.task_id===t.id && l.done_date===dateStr)).length;
-    points.push({ day, pct: Math.round((doneCount/dueTasks.length)*100) });
+    bars.push({ day, pct: Math.round((doneCount/dueTasks.length)*100) });
   }
 
-  const w = Math.max(points.length * 34, 320), h = 150, padL = 34, padR = 14, padT = 14, padB = 24;
-  const plotW = w - padL - padR, plotH = h - padT - padB;
+  const barW = 20, gap = 6, padL = 34, padR = 10, padT = 14, padB = 24;
+  const w = Math.max(bars.length * (barW+gap) + padL + padR, 320), h = 150;
+  const plotH = h - padT - padB;
   svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
   svg.setAttribute('width', w);
 
-  if(points.length < 2){
-    svg.innerHTML = `<text x="${w/2}" y="${h/2}" fill="var(--text-dim)" font-size="12" text-anchor="middle">Todavía no hay suficientes datos este mes.</text>`;
+  if(bars.every(b => b.pct === null)){
+    svg.innerHTML = `<text x="${w/2}" y="${h/2}" fill="var(--text-dim)" font-size="12" text-anchor="middle">Todavía no hay hábitos con días asignados.</text>`;
     return;
   }
-
-  const pts = points.map((p,i) => {
-    const x = padL + (i/(points.length-1))*plotW;
-    const y = padT + plotH - (p.pct/100)*plotH;
-    return [x,y];
-  });
 
   let grid = '';
   [0,25,50,75,100].forEach(v => {
@@ -670,19 +671,23 @@ function renderLineChart(){
     grid += `<text x="${padL-8}" y="${y+3}" fill="var(--text-dim)" font-size="9" text-anchor="end">${v}%</text>`;
   });
 
-  let xlabels = '';
-  points.forEach((p,i) => {
-    if(i % Math.ceil(points.length/12 || 1) === 0 || i === points.length-1){
-      xlabels += `<text x="${pts[i][0]}" y="${h-6}" fill="var(--text-dim)" font-size="9" text-anchor="middle">${p.day}</text>`;
+  let barsHtml = '';
+  bars.forEach((b,i) => {
+    const x = padL + i*(barW+gap);
+    if(b.pct === null){
+      // día sin hábitos asignados: barra hueca, sin dato
+      barsHtml += `<rect x="${x}" y="${padT+plotH-4}" width="${barW}" height="4" rx="2" fill="var(--border-soft)"/>`;
+    } else {
+      const barH = Math.max((b.pct/100)*plotH, 3);
+      const color = b.pct >= 75 ? 'var(--green)' : b.pct >= 40 ? 'var(--gold)' : b.pct > 0 ? 'var(--red)' : 'var(--border-soft)';
+      barsHtml += `<rect x="${x}" y="${padT+plotH-barH}" width="${barW}" height="${barH}" rx="3" fill="${color}"/>`;
+    }
+    if(i % Math.ceil(bars.length/16 || 1) === 0 || i === bars.length-1){
+      barsHtml += `<text x="${x+barW/2}" y="${h-6}" fill="var(--text-dim)" font-size="9" text-anchor="middle">${b.day}</text>`;
     }
   });
 
-  const path = smoothPath(pts);
-  const dots = pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="var(--green)"/>`).join('');
-
-  svg.innerHTML = `${grid}
-    <path d="${path}" fill="none" stroke="var(--green)" stroke-width="2.2" stroke-linecap="round"/>
-    ${dots}${xlabels}`;
+  svg.innerHTML = `${grid}${barsHtml}`;
 }
 
 function renderTrackerTable(){
@@ -869,13 +874,20 @@ function renderCalendar(){
       addArea = `<button class="cal-add-btn" data-cif-open="${dateStr}">+ agregar</button>`;
     }
 
-    html += `<div class="cal-day-big ${isToday?'today':''} ${isAdding?'selected-add':''}">
+    html += `<div class="cal-day-big ${isToday?'today':''} ${isAdding?'selected-add':''}" data-day-cell="${dateStr}">
       <div class="cal-day-num">${d}</div>
       <div class="day-task-list-mini">${tasksHtml}</div>
       ${addArea}
     </div>`;
   }
   grid.innerHTML = html;
+
+  grid.querySelectorAll('[data-day-cell]').forEach(cell => {
+    cell.addEventListener('dblclick', (e) => {
+      if(e.target.closest('input, button')) return; // no interferir con checkbox/×/+ agregar
+      openDayZoom(cell.dataset.dayCell);
+    });
+  });
 
   grid.querySelectorAll('[data-dt-toggle]').forEach(cb => cb.addEventListener('change', async () => {
     await sb.from('daily_tasks').update({ done: cb.checked }).eq('id', cb.dataset.dtToggle);
@@ -906,6 +918,73 @@ async function addDayTask(dateStr){
   await loadDailyTasksForMonth();
   renderCalendar();
 }
+
+/* ---- vista ampliada de un día (doble clic) ---- */
+let zoomedDate = null;
+function openDayZoom(dateStr){
+  zoomedDate = dateStr;
+  renderDayZoom();
+  document.getElementById('day-zoom-backdrop').classList.add('open');
+}
+function closeDayZoom(){
+  zoomedDate = null;
+  document.getElementById('day-zoom-backdrop').classList.remove('open');
+}
+function renderDayZoom(){
+  if(!zoomedDate) return;
+  const card = document.getElementById('day-zoom-card');
+  const [y,m,d] = zoomedDate.split('-').map(Number);
+  const label = new Date(y, m-1, d).toLocaleDateString('es-AR', { weekday:'long', day:'numeric', month:'long' });
+  const title = label.charAt(0).toUpperCase() + label.slice(1);
+  const items = dailyTasks.filter(t => t.task_date === zoomedDate)
+    .sort((a,b) => (a.task_time||'99:99').localeCompare(b.task_time||'99:99'));
+  const tasksHtml = items.length ? items.map(t => `
+    <div class="day-zoom-task">
+      <input type="checkbox" data-dz-toggle="${t.id}" ${t.done?'checked':''}>
+      ${t.task_time ? `<span class="dzt-time">${t.task_time}</span>` : ''}
+      <span class="dzt-text ${t.done?'done':''}">${escapeHtml(t.text)}</span>
+      <button class="dzt-del" data-dz-del="${t.id}">×</button>
+    </div>`).join('') : '<p class="empty-hint">Sin tareas anotadas para este día.</p>';
+
+  card.innerHTML = `
+    <div class="day-zoom-head">
+      <h3>${title}</h3>
+      <button class="day-zoom-close" id="day-zoom-close-btn">×</button>
+    </div>
+    <div class="day-zoom-add">
+      <input type="text" id="dz-add-text" placeholder="Anotar una tarea...">
+      <input type="time" id="dz-add-time">
+      <button id="dz-add-btn">Agregar</button>
+    </div>
+    <div id="dz-task-list">${tasksHtml}</div>`;
+
+  document.getElementById('day-zoom-close-btn').addEventListener('click', closeDayZoom);
+  document.getElementById('dz-add-btn').addEventListener('click', addDayTaskFromZoom);
+  document.getElementById('dz-add-text').addEventListener('keydown', (e) => { if(e.key==='Enter') addDayTaskFromZoom(); });
+  card.querySelectorAll('[data-dz-toggle]').forEach(cb => cb.addEventListener('change', async () => {
+    await sb.from('daily_tasks').update({ done: cb.checked }).eq('id', cb.dataset.dzToggle);
+    await loadDailyTasksForMonth(); renderCalendar(); renderDayZoom();
+  }));
+  card.querySelectorAll('[data-dz-del]').forEach(b => b.addEventListener('click', async () => {
+    await sb.from('daily_tasks').delete().eq('id', b.dataset.dzDel);
+    await loadDailyTasksForMonth(); renderCalendar(); renderDayZoom();
+  }));
+}
+async function addDayTaskFromZoom(){
+  const textInp = document.getElementById('dz-add-text');
+  const timeInp = document.getElementById('dz-add-time');
+  const text = textInp.value.trim();
+  if(!text) return;
+  const time = timeInp.value || null;
+  await sb.from('daily_tasks').insert({ user_id: currentUser.id, task_date: zoomedDate, text, task_time: time, done:false });
+  await loadDailyTasksForMonth();
+  renderCalendar();
+  renderDayZoom();
+}
+document.getElementById('day-zoom-backdrop').addEventListener('click', (e) => {
+  if(e.target.id === 'day-zoom-backdrop') closeDayZoom();
+});
+document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && zoomedDate) closeDayZoom(); });
 
 /* ================= NOTAS ================= */
 function sectionColor(id){ const s = sections.find(x => x.id===id); return s ? s.color : '#5C6779'; }
@@ -1038,14 +1117,20 @@ async function deleteCurrentNote(){
 /* ---------------- TEMA (claro/oscuro) ---------------- */
 function applyTheme(theme){
   document.body.classList.toggle('dark-theme', theme === 'dark');
-  document.getElementById('theme-toggle-btn').textContent = theme === 'dark' ? '☀️' : '🌙';
+  const icon = theme === 'dark' ? '☀️' : '🌙';
+  const authBtn = document.getElementById('theme-toggle-btn-auth');
+  const appBtn = document.getElementById('theme-toggle-btn-app');
+  if(authBtn) authBtn.textContent = icon;
+  if(appBtn) appBtn.textContent = icon;
 }
 applyTheme(localStorage.getItem('bitacora-theme') || 'light');
-document.getElementById('theme-toggle-btn').addEventListener('click', () => {
+function toggleTheme(){
   const next = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
   localStorage.setItem('bitacora-theme', next);
   applyTheme(next);
-});
+}
+document.getElementById('theme-toggle-btn-auth').addEventListener('click', toggleTheme);
+document.getElementById('theme-toggle-btn-app').addEventListener('click', toggleTheme);
 
 init();
 </script>
