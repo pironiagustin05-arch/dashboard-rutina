@@ -247,41 +247,100 @@
   .empty-hint{font-size:13px;color:var(--text-dim);font-style:italic;padding:var(--s-3) 2px;}
 
   /* ================= RUTINA ================= */
-  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-3);margin-bottom:var(--s-7);}
-  .stat-card{padding:var(--s-5);text-align:left;transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease);position:relative;overflow:hidden;}
-  .stat-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);opacity:.55;}
-  .stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}
-  .stat-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:var(--s-2);font-weight:600;}
-  .stat-value{font-family:var(--font-display);font-size:26px;font-weight:600;color:var(--text);letter-spacing:-0.02em;}
+  /* ================= RUTINA — compact rows =================
+     Inspiración: Streaks (iOS), Habitify, Notion Habit tracker.
+     Cada hábito = 1 fila densa: título + progreso, 7 puntos de semana,
+     acción principal a la derecha. Nada de tarjetas tipo "hero". */
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-3);margin-bottom:var(--s-5);}
+  .stat-card{padding:var(--s-3) var(--s-4);text-align:left;position:relative;overflow:hidden;
+    transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease);}
+  .stat-card::before{content:"";position:absolute;top:0;left:0;bottom:0;width:2px;background:var(--gold);opacity:.55;}
+  .stat-card:hover{transform:translateY(-1px);box-shadow:var(--shadow-md);}
+  .stat-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:2px;font-weight:600;}
+  .stat-value{font-family:var(--font-display);font-size:20px;font-weight:600;color:var(--text);letter-spacing:-0.02em;line-height:1.15;}
   .stat-value.green{color:var(--green);}
   .stat-value.red{color:var(--red);}
   .stat-value.gold{color:var(--gold);}
 
-  .habit-card{padding:var(--s-6);margin-bottom:var(--s-4);transition:box-shadow var(--dur) var(--ease);}
-  .habit-card:hover{box-shadow:var(--shadow-md);}
-  .habit-card-head{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);margin-bottom:var(--s-4);}
-  .habit-name-input{background:transparent;border:none;color:var(--text);font-weight:600;font-size:22px;
-    font-family:var(--font-display);width:100%;padding:2px 0;letter-spacing:-0.02em;}
-  .habit-name-input:focus{outline:none;border-bottom:1px solid var(--gold);}
-  .habit-del{background:transparent;border:1px solid transparent;color:var(--text-dim);font-size:18px;flex-shrink:0;padding:6px 10px;border-radius:var(--r-sm);}
-  .habit-del:hover{color:var(--red);background:var(--red-soft);border-color:var(--red-soft);}
-  .habit-progress-label{font-size:13px;color:var(--text-dim);margin-bottom:var(--s-3);}
+  .habit-card{
+    padding:var(--s-3) var(--s-4);
+    margin-bottom:var(--s-2);
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto auto;
+    align-items:center;
+    gap:var(--s-4);
+    transition:border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+  .habit-card:hover{border-color:var(--text-dim);box-shadow:var(--shadow-md);transform:translateY(-1px);}
+  /* First col: title stacked over progress */
+  .habit-card-head{
+    display:flex;flex-direction:column;gap:2px;margin:0;min-width:0;
+    grid-column:1;
+  }
+  .habit-name-input{
+    background:transparent;border:none;color:var(--text);
+    font-weight:600;font-size:15px;font-family:var(--font-body);
+    width:100%;padding:0;letter-spacing:-0.005em;line-height:1.25;
+    text-overflow:ellipsis;
+  }
+  .habit-name-input:focus{outline:none;color:var(--gold);}
+  .habit-progress-label{font-size:11.5px;color:var(--text-dim);margin:0;line-height:1.3;}
   .habit-progress-label b{color:var(--text);font-weight:600;}
-  .habit-squares{display:flex;gap:var(--s-2);flex-wrap:wrap;margin-bottom:var(--s-5);}
-  .habit-square{width:40px;height:40px;border-radius:var(--r-sm);border:1.5px solid var(--border);
-    background:var(--panel-2);display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:16px;transition:all var(--dur) var(--ease);cursor:pointer;}
-  .habit-square:hover{border-color:var(--green);color:var(--green);}
-  .habit-square.filled{background:linear-gradient(135deg,var(--green) 0%,#3f7452 100%);border-color:var(--green);color:#fff;box-shadow:0 2px 6px -2px rgba(75,138,94,.5);}
-  .habit-target-input{width:44px;background:transparent;border:none;border-bottom:1px dashed var(--border);
-    color:var(--text-dim);font-size:13px;text-align:center;}
-  .habit-target-input:focus{outline:none;border-bottom-color:var(--gold);color:var(--text);}
-  .habit-actions{display:flex;gap:var(--s-2);}
-  .habit-actions button{border:1px solid var(--border);background:var(--panel);border-radius:var(--r-sm);
-    padding:10px 18px;font-size:13.5px;font-weight:600;color:var(--text);box-shadow:var(--shadow-xs);}
-  .habit-actions button:hover{transform:translateY(-1px);box-shadow:var(--shadow-md);}
+  .habit-target-input{width:26px;background:transparent;border:none;
+    color:var(--text-dim);font-size:11.5px;text-align:center;padding:0;}
+  .habit-target-input:focus{outline:none;color:var(--gold);}
+
+  /* Second col: 7 tiny day dots */
+  .habit-squares{
+    display:flex;flex-wrap:wrap;gap:5px;margin:0;max-width:171px;
+    grid-column:2;justify-content:flex-start;
+  }
+  .habit-square{
+    width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border);
+    background:var(--panel-2);padding:0;
+    display:flex;align-items:center;justify-content:center;
+    color:transparent;font-size:0;transition:all var(--dur) var(--ease);cursor:pointer;
+  }
+  .habit-square:hover{border-color:var(--green);background:var(--green-soft);}
+  .habit-square.filled{
+    background:var(--green);border-color:var(--green);
+    box-shadow:inset 0 0 0 1.5px var(--panel);
+  }
+
+  /* Third col: primary action + delete */
+  .habit-actions{display:flex;gap:var(--s-1);align-items:center;grid-column:3;}
+  .habit-actions button{
+    border:1px solid var(--border);background:var(--panel);border-radius:var(--r-sm);
+    padding:6px 12px;font-size:12px;font-weight:600;color:var(--text);box-shadow:none;
+    transition:all var(--dur) var(--ease);white-space:nowrap;
+  }
   .habit-actions .do-btn{border-color:var(--green);color:var(--green);background:var(--green-soft);}
-  .habit-actions .do-btn:hover{background:var(--green);color:#fff;}
+  .habit-actions .do-btn:hover{background:var(--green);color:#fff;transform:translateY(-1px);box-shadow:var(--shadow-sm);}
+  .habit-actions .undo-btn{color:var(--text-dim);}
   .habit-actions .undo-btn:hover{color:var(--red);border-color:var(--red);background:var(--red-soft);}
+  .habit-del{
+    background:transparent;border:1px solid transparent;color:var(--text-dim);
+    font-size:15px;padding:4px 8px;border-radius:var(--r-sm);line-height:1;
+    opacity:0;transition:opacity var(--dur) var(--ease), color var(--dur) var(--ease), background var(--dur) var(--ease);
+  }
+  .habit-card:hover .habit-del,
+  .habit-del:focus{opacity:1;}
+  .habit-del:hover{color:var(--red);background:var(--red-soft);}
+
+  @media (max-width: 720px){
+    .habit-card{
+      grid-template-columns:minmax(0,1fr) auto;
+      grid-template-areas:
+        "head    actions"
+        "squares squares";
+      gap:var(--s-2) var(--s-3);
+    }
+    .habit-card-head{grid-area:head;grid-column:auto;}
+    .habit-actions{grid-area:actions;grid-column:auto;}
+    .habit-squares{grid-area:squares;grid-column:auto;justify-self:start;}
+    .habit-del{opacity:1;}
+    .stat-row{grid-template-columns:repeat(2,1fr);}
+  }
 
   /* ================= AGENDA ================= */
   .agenda-card{padding:var(--s-6);}
@@ -726,13 +785,13 @@ function renderHabits(){
     <div class="habit-card">
       <div class="habit-card-head">
         <input type="text" class="habit-name-input" data-habit-name="${t.id}" value="${escapeHtml(t.name)}">
-        <button class="habit-del" data-habit-del="${t.id}" aria-label="Eliminar hábito">×</button>
+        <div class="habit-progress-label"><b>${count}/${target}</b> esta semana · meta <input type="number" min="1" max="14" class="habit-target-input" data-habit-target="${t.id}" value="${target}">/sem</div>
       </div>
-      <div class="habit-progress-label"><b>${count}/${target}</b> esta semana &nbsp;·&nbsp; meta: <input type="number" min="1" max="14" class="habit-target-input" data-habit-target="${t.id}" value="${target}"> veces/semana</div>
       <div class="habit-squares">${squares}</div>
       <div class="habit-actions">
-        <button class="do-btn" data-habit-do="${t.id}">+ Marcar hecho hoy</button>
-        <button class="undo-btn" data-habit-undo="${t.id}">Deshacer</button>
+        <button class="do-btn" data-habit-do="${t.id}" title="Marcar hecho hoy">+ Hoy</button>
+        <button class="undo-btn" data-habit-undo="${t.id}" title="Deshacer último">↶</button>
+        <button class="habit-del" data-habit-del="${t.id}" aria-label="Eliminar hábito" title="Eliminar">×</button>
       </div>
     </div>`;
   }).join('');
